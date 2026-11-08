@@ -30,7 +30,7 @@
             justify-content: center;
         }
 
-        /* --- VISTA ESCRITORIO (PC) --- */
+        /* --- VISTA ESCRITORIO POR DEFECTO (PC) --- */
         .clock-stage {
             position: absolute;
             left: clamp(220px, 26vw, 38vw);
@@ -225,26 +225,26 @@
             text-transform: uppercase;
         }
 
-        /* --- ADAPTACIÓN RESPONSIVE PARA CELULARES (PANTALLAS VERTICALES) --- */
-        @media (max-width: 768px) {
+        /* --- DETECCIÓN FORZADA DE PANTALLA VERTICAL / MÓVIL --- */
+        @media screen and (max-width: 900px), screen and (orientation: portrait) {
             .clock-stage {
-                left: 50% !important;
-                top: 42% !important;
-                transform: translate(-50%, -50%) scale(0.68) !important;
+                left: 35% !important;
+                top: 40% !important;
+                transform: translate(-50%, -50%) scale(0.48) !important;
             }
 
             .date-display {
                 right: auto !important;
-                bottom: 40px !important;
                 left: 50% !important;
+                bottom: 30px !important;
                 transform: translateX(-50%) !important;
                 text-align: center !important;
-                width: 90% !important;
+                width: 100% !important;
             }
 
             .motivation-comment {
                 font-size: 0.8rem !important;
-                margin-bottom: 8px !important;
+                margin-bottom: 6px !important;
             }
         }
     </style>
@@ -252,7 +252,6 @@
 <body>
 
     <div class="container">
-        <!-- Haz clic/tap en el Reloj para abrir la app nativa de Reloj -->
         <div class="clock-stage" id="clock-btn" title="Abrir Reloj">
             <div class="hour-display" id="hour">00</div>
 
@@ -267,7 +266,6 @@
             </div>
         </div>
 
-        <!-- Haz clic/tap en el texto para abrir el Calendario -->
         <div class="date-display" id="calendar-btn" title="Abrir Calendario">
             <div class="motivation-comment">// Resiste inútil, tú puedes</div>
             <div class="full-date" id="date-str">-- --- ----</div>
@@ -281,12 +279,10 @@
         const R_SECONDS_TICKS = 255; 
         const R_SECONDS_NUM   = 290;
 
-        // Abrir app nativa de Reloj
         document.getElementById('clock-btn').addEventListener('click', function() {
             window.location.href = "ms-clock:";
         });
 
-        // Abrir app nativa de Calendario
         document.getElementById('calendar-btn').addEventListener('click', function() {
             window.location.href = "outlookcal:";
         });
