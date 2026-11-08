@@ -13,9 +13,9 @@
         }
 
         html, body {
-            width: 100%;
-            height: 100%;
-            background-color: #000000 !important;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000000;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
@@ -23,24 +23,51 @@
 
         .container {
             position: relative;
-            width: 100vw;
-            height: 100vh;
-            background-color: #000000;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
         }
 
-        /* Posicionamiento del semicírculo a la izquierda */
-        .clock-wrapper {
+        /* Área general del reloj */
+        .clock-container {
             position: absolute;
-            left: -120px;
+            left: -150px;
             top: 50%;
             transform: translateY(-50%);
             width: 700px;
             height: 700px;
         }
 
+        /* Hora principal fija */
+        .hour-display {
+            position: absolute;
+            left: 200px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 8rem;
+            font-weight: 700;
+            color: #ffffff;
+            z-index: 10;
+            line-height: 1;
+        }
+
+        /* Píldora selector donde encajan los minutos */
+        .pill-indicator {
+            position: absolute;
+            left: 350px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 120px;
+            height: 60px;
+            border: 2px solid #ffffff;
+            border-radius: 30px;
+            z-index: 5;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            pointer-events: none;
+        }
+
+        /* Diales de rotación */
         .dial {
             position: absolute;
             top: 0;
@@ -48,67 +75,42 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.5s cubic-bezier(0.2, 0, 0, 1);
         }
 
-        /* Ticks y marcas de segundos */
+        /* Anillo Exterior: Ticks de Segundos */
         .tick {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 2px;
-            height: 12px;
-            background-color: rgba(255, 255, 255, 0.35);
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
             transform-origin: 0 0;
         }
 
         .tick.major {
             width: 3px;
-            height: 18px;
-            background-color: rgba(255, 255, 255, 0.9);
+            height: 16px;
+            background-color: rgba(255, 255, 255, 0.8);
         }
 
-        /* Números del minuto */
+        /* Anillo Interior: Números de Minutos */
         .minute-num {
             position: absolute;
             top: 50%;
             left: 50%;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.85);
-            transform-origin: 0 0;
-            text-anchor: middle;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            transform-origin: center center;
         }
 
-        /* Píldora indicadora */
-        .pill-indicator {
-            position: absolute;
-            left: 310px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 110px;
-            height: 60px;
-            border: 2px solid #ffffff;
-            border-radius: 35px;
-            pointer-events: none;
-            z-index: 10;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Hora destacada */
-        .hour-display {
-            position: absolute;
-            left: 70px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 8.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            z-index: 5;
-            letter-spacing: -4px;
-        }
-
-        /* Fecha y día */
+        /* Bloque de Fecha y Día */
         .date-display {
             position: absolute;
             right: 80px;
@@ -120,19 +122,19 @@
 
         .date-display .full-date {
             font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 600;
             margin-bottom: 4px;
         }
 
         .date-display .day-name {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: #ffffff;
             font-weight: 800;
             text-transform: uppercase;
         }
 
-        /* Controles de usuario */
+        /* Botones de Control */
         .controls {
             position: absolute;
             top: 20px;
@@ -149,39 +151,38 @@
         }
 
         .btn {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
             padding: 8px 16px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 0.85rem;
-            backdrop-filter: blur(5px);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Botones de control superiores -->
+        <!-- Botones de Control -->
         <div class="controls">
             <button class="btn" onclick="toggleFormat()">Formato: <span id="format-label">24H</span></button>
             <button class="btn" onclick="toggleFullscreen()">Pantalla Completa</button>
         </div>
 
-        <!-- Hora principal -->
-        <div class="hour-display" id="hour">12</div>
+        <div class="clock-container">
+            <!-- Hora -->
+            <div class="hour-display" id="hour">12</div>
 
-        <!-- Semicírculo del reloj -->
-        <div class="clock-wrapper">
+            <!-- Píldora que encierra el minuto actual -->
+            <div class="pill-indicator"></div>
+
+            <!-- Diales giratorios de segundos y minutos -->
             <div class="dial" id="ticks-dial"></div>
             <div class="dial" id="minutes-dial"></div>
         </div>
 
-        <!-- Píldora del minuto actual -->
-        <div class="pill-indicator"></div>
-
-        <!-- Fecha en la esquina inferior derecha -->
+        <!-- Fecha inferior derecha -->
         <div class="date-display">
             <div class="full-date" id="date-str">08 NOV 2026</div>
             <div class="day-name" id="day-str">SUNDAY</div>
@@ -191,36 +192,39 @@
     <script>
         let is24Hour = true;
 
-        function createClockDial() {
+        function createClockDials() {
             const ticksDial = document.getElementById('ticks-dial');
             const minutesDial = document.getElementById('minutes-dial');
-            const radiusTicks = 320;
-            const radiusNum = 270;
-            const center = 350;
 
+            const center = 350;
+            const outerRadius = 300; // Radio del círculo de marcas/segundos
+            const innerRadius = 240; // Radio del círculo interior con los números de minutos
+
+            // 1. Crear marcas de segundos (Anillo Exterior)
             for (let i = 0; i < 60; i++) {
                 const angle = (i * 6) * (Math.PI / 180);
                 const tick = document.createElement('div');
                 tick.className = `tick ${i % 5 === 0 ? 'major' : ''}`;
-                
-                const x = center + radiusTicks * Math.cos(angle);
-                const y = center + radiusTicks * Math.sin(angle);
-                
+
+                const x = center + outerRadius * Math.cos(angle);
+                const y = center + outerRadius * Math.sin(angle);
+
                 tick.style.left = `${x}px`;
                 tick.style.top = `${y}px`;
                 tick.style.transform = `rotate(${i * 6 + 90}deg)`;
                 ticksDial.appendChild(tick);
             }
 
+            // 2. Crear números de minutos (Anillo Interior)
             for (let i = 0; i < 60; i += 5) {
                 const angle = (i * 6) * (Math.PI / 180);
                 const num = document.createElement('div');
                 num.className = 'minute-num';
                 num.innerText = i.toString().padStart(2, '0');
-                
-                const x = center + radiusNum * Math.cos(angle) - 15;
-                const y = center + radiusNum * Math.sin(angle) - 15;
-                
+
+                const x = center + innerRadius * Math.cos(angle) - 20;
+                const y = center + innerRadius * Math.sin(angle) - 20;
+
                 num.style.left = `${x}px`;
                 num.style.top = `${y}px`;
                 num.style.transform = `rotate(${i * 6}deg)`;
@@ -238,17 +242,19 @@
                 hours = hours % 12 || 12;
             }
 
+            // Hora
             document.getElementById('hour').innerText = hours.toString().padStart(2, '0');
 
+            // Rotación alineada a las 0° (la píldora a la derecha)
             const minuteAngle = -(minutes * 6 + (seconds / 60) * 6);
             document.getElementById('minutes-dial').style.transform = `rotate(${minuteAngle}deg)`;
             document.getElementById('ticks-dial').style.transform = `rotate(${minuteAngle}deg)`;
 
+            // Fecha
             const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
             const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
-            
-            const dateString = `${now.getDate().toString().padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
-            document.getElementById('date-str').innerText = dateString;
+
+            document.getElementById('date-str').innerText = `${now.getDate().toString().padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
             document.getElementById('day-str').innerText = days[now.getDay()];
         }
 
@@ -268,7 +274,7 @@
             }
         }
 
-        createClockDial();
+        createClockDials();
         updateClock();
         setInterval(updateClock, 1000);
     </script>
