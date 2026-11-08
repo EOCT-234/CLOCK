@@ -29,20 +29,20 @@
             align-items: center;
         }
 
-        /* Escenario del reloj */
+        /* Escenario de reloj */
         .clock-stage {
             position: absolute;
-            left: 5vw;
+            left: 0;
             top: 50%;
             transform: translateY(-50%);
-            width: 700px;
+            width: 800px;
             height: 700px;
         }
 
-        /* Hora principal fija a la izquierda */
+        /* Hora fija a la izquierda */
         .hour-display {
             position: absolute;
-            left: 20px;
+            left: 60px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 8.5rem;
@@ -53,31 +53,28 @@
             letter-spacing: -3px;
         }
 
-        /* Óvalo contenedor del minuto/segundo activo */
+        /* Píldora que atrapa el minuto y el segundo */
         .oval-pill {
             position: absolute;
-            left: 205px;
+            left: 235px;
             top: 50%;
             transform: translateY(-50%);
-            width: 135px;
+            width: 140px;
             height: 52px;
             border: 2px solid rgba(255, 255, 255, 0.9);
             border-radius: 26px;
             z-index: 8;
             pointer-events: none;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
         }
 
-        /* Eje de rotación del semicírculo */
+        /* Centro de la rueda posicionado a la izquierda para que el semicírculo abra hacia la derecha */
         .wheel-center {
             position: absolute;
-            left: 80px;
+            left: 110px;
             top: 50%;
             width: 0;
             height: 0;
-            /* Aplica una máscara para que SOLO se vea el semicírculo derecho y desaparezca el lado izquierdo */
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 45%, #000 52%, #000 100%);
-            mask-image: linear-gradient(to right, transparent 0%, transparent 45%, #000 52%, #000 100%);
         }
 
         .dial-ring {
@@ -89,7 +86,7 @@
             transition: transform 0.3s cubic-bezier(0.1, 0, 0.1, 1);
         }
 
-        /* Semicírculo Interior: Minutos */
+        /* CÍRCULO INTERIOR: Números de minutos */
         .minute-item {
             position: absolute;
             font-size: 1.5rem;
@@ -103,12 +100,12 @@
             margin-top: -20px;
         }
 
-        /* Semicírculo Exterior: Segundos */
+        /* CÍRCULO EXTERIOR: Ticks de segundos */
         .tick-item {
             position: absolute;
             width: 2px;
             height: 12px;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.35);
             margin-left: -1px;
             margin-top: -6px;
         }
@@ -175,27 +172,27 @@
 <body>
 
     <div class="container">
-        <!-- Controles de pantalla -->
+        <!-- Controles -->
         <div class="controls">
             <button class="btn" onclick="toggleFormat()">Formato: <span id="format-label">24H</span></button>
             <button class="btn" onclick="toggleFullscreen()">Pantalla Completa</button>
         </div>
 
         <div class="clock-stage">
-            <!-- Número de la hora -->
+            <!-- Hora -->
             <div class="hour-display" id="hour">13</div>
 
-            <!-- Píldora selector de minuto activo -->
+            <!-- Óvalo selector -->
             <div class="oval-pill"></div>
 
-            <!-- Anillos recortados como semicírculo -->
+            <!-- Eje giratorio sin máscaras -->
             <div class="wheel-center">
                 <div class="dial-ring" id="minutes-ring"></div>
                 <div class="dial-ring" id="seconds-ring"></div>
             </div>
         </div>
 
-        <!-- Fecha en la esquina derecha -->
+        <!-- Fecha -->
         <div class="date-display">
             <div class="full-date" id="date-str">08 NOV 2026</div>
             <div class="day-name" id="day-str">SUNDAY</div>
@@ -204,14 +201,14 @@
 
     <script>
         let is24Hour = true;
-        const R_MINUTES = 175; // Radio interior (minutos)
-        const R_SECONDS = 235; // Radio exterior (segundos)
+        const R_MINUTES = 160; // Radio interior (minutos entra a la izquierda del óvalo)
+        const R_SECONDS = 220; // Radio exterior (segundos entra a la derecha del óvalo)
 
         function buildDials() {
             const minutesRing = document.getElementById('minutes-ring');
             const secondsRing = document.getElementById('seconds-ring');
 
-            // 1. Minutos cada 5 (00, 05, 10, etc.)
+            // 1. Minutos cada 5 (00, 05, 10... 55)
             for (let i = 0; i < 60; i += 5) {
                 const angleDeg = i * 6;
                 const angleRad = angleDeg * (Math.PI / 180);
@@ -230,7 +227,7 @@
                 minutesRing.appendChild(item);
             }
 
-            // 2. Ticks de Segundos
+            // 2. Ticks de segundos
             for (let i = 0; i < 60; i++) {
                 const angleDeg = i * 6;
                 const angleRad = angleDeg * (Math.PI / 180);
@@ -261,7 +258,7 @@
 
             document.getElementById('hour').innerText = hours.toString().padStart(2, '0');
 
-            // Rotación sincrónica con el minuto y segundo actual
+            // Rotación alineada
             const minAngle = -(minutes * 6 + (seconds / 60) * 6);
             document.getElementById('minutes-ring').style.transform = `rotate(${minAngle}deg)`;
 
