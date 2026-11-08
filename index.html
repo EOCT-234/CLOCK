@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Minimalist Arc Clock Widget</title>
     <style>
         * {
@@ -27,9 +27,10 @@
             height: 100%;
             display: flex;
             align-items: center;
+            justify-content: center;
         }
 
-        /* Escenario de reloj (Zona interactiva para abrir Reloj) */
+        /* --- VISTA ESCRITORIO (PC) --- */
         .clock-stage {
             position: absolute;
             left: clamp(220px, 26vw, 38vw);
@@ -38,16 +39,11 @@
             width: 950px;
             height: 700px;
             cursor: pointer;
-            border-radius: 50%;
             transition: transform 0.2s ease, filter 0.2s ease;
         }
 
         .clock-stage:hover {
             filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
-        }
-
-        .clock-stage:active {
-            transform: translateY(-50%) scale(0.99);
         }
 
         .hour-display {
@@ -189,7 +185,6 @@
             margin-top: -15px;
         }
 
-        /* Sección de motivación y fecha (Zona interactiva para abrir Calendario) */
         .date-display {
             position: absolute;
             right: 100px;
@@ -200,15 +195,11 @@
             cursor: pointer;
             padding: 10px 15px;
             border-radius: 12px;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            transition: background-color 0.2s ease;
         }
 
         .date-display:hover {
             background-color: rgba(255, 255, 255, 0.05);
-        }
-
-        .date-display:active {
-            transform: scale(0.97);
         }
 
         .motivation-comment {
@@ -233,12 +224,35 @@
             font-weight: 800;
             text-transform: uppercase;
         }
+
+        /* --- ADAPTACIÓN RESPONSIVE PARA CELULARES (PANTALLAS VERTICALES) --- */
+        @media (max-width: 768px) {
+            .clock-stage {
+                left: 50% !important;
+                top: 42% !important;
+                transform: translate(-50%, -50%) scale(0.68) !important;
+            }
+
+            .date-display {
+                right: auto !important;
+                bottom: 40px !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+                text-align: center !important;
+                width: 90% !important;
+            }
+
+            .motivation-comment {
+                font-size: 0.8rem !important;
+                margin-bottom: 8px !important;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Haz clic en cualquier parte del Reloj para abrir la app de Reloj -->
+        <!-- Haz clic/tap en el Reloj para abrir la app nativa de Reloj -->
         <div class="clock-stage" id="clock-btn" title="Abrir Reloj">
             <div class="hour-display" id="hour">00</div>
 
@@ -253,7 +267,7 @@
             </div>
         </div>
 
-        <!-- Haz clic en el bloque de Fecha para abrir el Calendario -->
+        <!-- Haz clic/tap en el texto para abrir el Calendario -->
         <div class="date-display" id="calendar-btn" title="Abrir Calendario">
             <div class="motivation-comment">// Resiste inútil, tú puedes</div>
             <div class="full-date" id="date-str">-- --- ----</div>
@@ -267,12 +281,12 @@
         const R_SECONDS_TICKS = 255; 
         const R_SECONDS_NUM   = 290;
 
-        // Abrir App de Reloj en Windows
+        // Abrir app nativa de Reloj
         document.getElementById('clock-btn').addEventListener('click', function() {
             window.location.href = "ms-clock:";
         });
 
-        // Abrir App de Calendario en Windows
+        // Abrir app nativa de Calendario
         document.getElementById('calendar-btn').addEventListener('click', function() {
             window.location.href = "outlookcal:";
         });
