@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Arc Clock Widget</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Botones de control superiores -->
+        <div class="controls">
+            <button class="btn" onclick="toggleFormat()">Formato: <span id="format-label">24H</span></button>
+            <button class="btn" onclick="toggleFullscreen()">Pantalla Completa</button>
+        </div>
+
+        <!-- Hora principal -->
+        <div class="hour-display" id="hour">18</div>
+
+        <!-- Semicírculo del reloj (diales de minutos y marcas) -->
+        <div class="clock-wrapper">
+            <div class="dial" id="ticks-dial"></div>
+            <div class="dial" id="minutes-dial"></div>
+        </div>
+
+        <!-- Píldora que enmarca el minuto actual -->
+        <div class="pill-indicator"></div>
+
+        <!-- Fecha en la esquina inferior derecha -->
+        <div class="date-display">
+            <div class="full-date" id="date-str">13 AUG 2026</div>
+            <div class="day-name" id="day-str">THURSDAY</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
