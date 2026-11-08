@@ -29,20 +29,30 @@
             align-items: center;
         }
 
-        /* Escenario de reloj */
+        /* Escenario de reloj (Zona interactiva para abrir Reloj) */
         .clock-stage {
             position: absolute;
-            left: 0;
+            left: clamp(220px, 26vw, 38vw);
             top: 50%;
             transform: translateY(-50%);
-            width: 800px;
+            width: 950px;
             height: 700px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.2s ease, filter 0.2s ease;
         }
 
-        /* Hora fija a la izquierda */
+        .clock-stage:hover {
+            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
+        }
+
+        .clock-stage:active {
+            transform: translateY(-50%) scale(0.99);
+        }
+
         .hour-display {
             position: absolute;
-            left: 60px;
+            left: 65px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 8.5rem;
@@ -53,22 +63,40 @@
             letter-spacing: -3px;
         }
 
-        /* Píldora que atrapa el minuto y el segundo */
         .oval-pill {
             position: absolute;
             left: 235px;
             top: 50%;
             transform: translateY(-50%);
-            width: 140px;
-            height: 52px;
-            border: 2px solid rgba(255, 255, 255, 0.9);
-            border-radius: 26px;
+            width: 200px;
+            height: 64px;
+            border: 2px solid rgba(255, 255, 255, 0.95);
+            border-radius: 32px;
             z-index: 8;
-            pointer-events: none;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px 0 45px;
         }
 
-        /* Centro de la rueda posicionado a la izquierda para que el semicírculo abra hacia la derecha */
+        .oval-pill .pill-minute {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #ffffff;
+            z-index: 12;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .oval-pill .pill-second {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            z-index: 12;
+            letter-spacing: 0px;
+        }
+
         .wheel-center {
             position: absolute;
             left: 110px;
@@ -83,15 +111,38 @@
             left: 0;
             width: 0;
             height: 0;
-            transition: transform 0.3s cubic-bezier(0.1, 0, 0.1, 1);
         }
 
-        /* CÍRCULO INTERIOR: Números de minutos */
+        .minute-tick-item {
+            position: absolute;
+            width: 2px;
+            height: 8px;
+            background-color: #ffffff;
+            margin-left: -1px;
+            margin-top: -4px;
+        }
+
+        .minute-tick-item.major {
+            width: 3px;
+            height: 16px;
+            margin-left: -1.5px;
+            margin-top: -8px;
+        }
+
+        .minute-tick-item.active {
+            width: 4px !important;
+            height: 20px !important;
+            background-color: #ffffff !important;
+            margin-left: -2px !important;
+            margin-top: -10px !important;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+            z-index: 15;
+        }
+
         .minute-item {
             position: absolute;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.85);
             width: 50px;
             height: 40px;
             line-height: 40px;
@@ -100,32 +151,73 @@
             margin-top: -20px;
         }
 
-        /* CÍRCULO EXTERIOR: Ticks de segundos */
         .tick-item {
             position: absolute;
             width: 2px;
-            height: 12px;
-            background-color: rgba(255, 255, 255, 0.35);
+            height: 10px;
+            background-color: #ffffff;
             margin-left: -1px;
-            margin-top: -6px;
+            margin-top: -5px;
         }
 
         .tick-item.major {
             width: 3px;
-            height: 18px;
-            background-color: rgba(255, 255, 255, 0.85);
+            height: 16px;
             margin-left: -1.5px;
-            margin-top: -9px;
+            margin-top: -8px;
         }
 
-        /* Fecha y Día */
+        .tick-item.active {
+            width: 3px !important;
+            height: 18px !important;
+            background-color: #ffffff !important;
+            margin-left: -1.5px !important;
+            margin-top: -9px !important;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            z-index: 15;
+        }
+
+        .second-num-item {
+            position: absolute;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 40px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            margin-left: -20px;
+            margin-top: -15px;
+        }
+
+        /* Sección de motivación y fecha (Zona interactiva para abrir Calendario) */
         .date-display {
             position: absolute;
-            right: 80px;
+            right: 100px;
             bottom: 80px;
             text-align: right;
             font-family: monospace;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 12px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .date-display:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .date-display:active {
+            transform: scale(0.97);
+        }
+
+        .motivation-comment {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.55);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
         .date-display .full-date {
@@ -141,157 +233,174 @@
             font-weight: 800;
             text-transform: uppercase;
         }
-
-        /* Botones de Control */
-        .controls {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 10px;
-            opacity: 0.3;
-            transition: opacity 0.3s ease;
-            z-index: 20;
-        }
-
-        .controls:hover {
-            opacity: 1;
-        }
-
-        .btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Controles -->
-        <div class="controls">
-            <button class="btn" onclick="toggleFormat()">Formato: <span id="format-label">24H</span></button>
-            <button class="btn" onclick="toggleFullscreen()">Pantalla Completa</button>
-        </div>
+        <!-- Haz clic en cualquier parte del Reloj para abrir la app de Reloj -->
+        <div class="clock-stage" id="clock-btn" title="Abrir Reloj">
+            <div class="hour-display" id="hour">00</div>
 
-        <div class="clock-stage">
-            <!-- Hora -->
-            <div class="hour-display" id="hour">13</div>
+            <div class="oval-pill">
+                <span class="pill-minute" id="pill-minute">00</span>
+                <span class="pill-second" id="pill-second">00</span>
+            </div>
 
-            <!-- Óvalo selector -->
-            <div class="oval-pill"></div>
-
-            <!-- Eje giratorio sin máscaras -->
             <div class="wheel-center">
                 <div class="dial-ring" id="minutes-ring"></div>
                 <div class="dial-ring" id="seconds-ring"></div>
             </div>
         </div>
 
-        <!-- Fecha -->
-        <div class="date-display">
-            <div class="full-date" id="date-str">08 NOV 2026</div>
-            <div class="day-name" id="day-str">SUNDAY</div>
+        <!-- Haz clic en el bloque de Fecha para abrir el Calendario -->
+        <div class="date-display" id="calendar-btn" title="Abrir Calendario">
+            <div class="motivation-comment">// Resiste inútil, tú puedes</div>
+            <div class="full-date" id="date-str">-- --- ----</div>
+            <div class="day-name" id="day-str">------</div>
         </div>
     </div>
 
     <script>
-        let is24Hour = true;
-        const R_MINUTES = 160; // Radio interior (minutos entra a la izquierda del óvalo)
-        const R_SECONDS = 220; // Radio exterior (segundos entra a la derecha del óvalo)
+        const R_MINUTES_TICKS = 145; 
+        const R_MINUTES_NUM   = 180; 
+        const R_SECONDS_TICKS = 255; 
+        const R_SECONDS_NUM   = 290;
 
-        function buildDials() {
+        // Abrir App de Reloj en Windows
+        document.getElementById('clock-btn').addEventListener('click', function() {
+            window.location.href = "ms-clock:";
+        });
+
+        // Abrir App de Calendario en Windows
+        document.getElementById('calendar-btn').addEventListener('click', function() {
+            window.location.href = "outlookcal:";
+        });
+
+        function renderArcElements(exactMinute, exactSecond, currentMinInt, currentSecInt) {
             const minutesRing = document.getElementById('minutes-ring');
             const secondsRing = document.getElementById('seconds-ring');
 
-            // 1. Minutos cada 5 (00, 05, 10... 55)
-            for (let i = 0; i < 60; i += 5) {
-                const angleDeg = i * 6;
-                const angleRad = angleDeg * (Math.PI / 180);
+            minutesRing.innerHTML = '';
+            secondsRing.innerHTML = '';
 
-                const item = document.createElement('div');
-                item.className = 'minute-item';
-                item.innerText = i.toString().padStart(2, '0');
+            // 1. MINUTOS
+            for (let i = 0; i < 60; i++) {
+                let diff = i - exactMinute;
+                while (diff < -30) diff += 60;
+                while (diff > 30) diff -= 60;
 
-                const x = R_MINUTES * Math.cos(angleRad);
-                const y = R_MINUTES * Math.sin(angleRad);
+                const angleDeg = diff * 6;
 
-                item.style.left = `${x}px`;
-                item.style.top = `${y}px`;
-                item.style.transform = `rotate(${angleDeg}deg)`;
+                if (angleDeg >= -88 && angleDeg <= 88) {
+                    const angleRad = angleDeg * (Math.PI / 180);
+                    const isCurrentMin = (i === currentMinInt);
+                    const opacity = isCurrentMin ? 1.0 : Math.max(0.12, 1 - Math.pow(Math.abs(angleDeg) / 90, 1.4));
 
-                minutesRing.appendChild(item);
+                    const mTick = document.createElement('div');
+                    const isMajor = i % 5 === 0;
+                    mTick.className = `minute-tick-item ${isMajor ? 'major' : ''} ${isCurrentMin ? 'active' : ''}`;
+                    
+                    const xMTick = R_MINUTES_TICKS * Math.cos(angleRad);
+                    const yMTick = R_MINUTES_TICKS * Math.sin(angleRad);
+
+                    mTick.style.left = `${xMTick}px`;
+                    mTick.style.top = `${yMTick}px`;
+                    mTick.style.transform = `rotate(${angleDeg + 90}deg)`;
+                    mTick.style.opacity = isCurrentMin ? "1" : (opacity * 0.75).toFixed(2);
+                    minutesRing.appendChild(mTick);
+
+                    if (i % 5 === 0 && Math.abs(angleDeg) > 12) {
+                        const item = document.createElement('div');
+                        item.className = 'minute-item';
+                        item.innerText = i.toString().padStart(2, '0');
+
+                        const x = R_MINUTES_NUM * Math.cos(angleRad);
+                        const y = R_MINUTES_NUM * Math.sin(angleRad);
+
+                        item.style.left = `${x}px`;
+                        item.style.top = `${y}px`;
+                        item.style.transform = `rotate(${angleDeg}deg)`;
+                        item.style.opacity = opacity.toFixed(2);
+                        item.style.color = opacity > 0.8 ? '#ffffff' : `rgba(255, 255, 255, ${opacity})`;
+
+                        minutesRing.appendChild(item);
+                    }
+                }
             }
 
-            // 2. Ticks de segundos
+            // 2. SEGUNDOS
             for (let i = 0; i < 60; i++) {
-                const angleDeg = i * 6;
-                const angleRad = angleDeg * (Math.PI / 180);
+                let diff = i - exactSecond;
+                while (diff < -30) diff += 60;
+                while (diff > 30) diff -= 60;
 
-                const tick = document.createElement('div');
-                tick.className = `tick-item ${i % 5 === 0 ? 'major' : ''}`;
+                const angleDeg = diff * 6;
 
-                const x = R_SECONDS * Math.cos(angleRad);
-                const y = R_SECONDS * Math.sin(angleRad);
+                if (angleDeg >= -88 && angleDeg <= 88) {
+                    const angleRad = angleDeg * (Math.PI / 180);
+                    const isCurrentSec = (i === currentSecInt);
+                    const opacity = isCurrentSec ? 1.0 : Math.max(0.1, 1 - Math.pow(Math.abs(angleDeg) / 90, 1.3));
 
-                tick.style.left = `${x}px`;
-                tick.style.top = `${y}px`;
-                tick.style.transform = `rotate(${angleDeg + 90}deg)`;
+                    const tick = document.createElement('div');
+                    const isMajor = i % 5 === 0;
+                    tick.className = `tick-item ${isMajor ? 'major' : ''} ${isCurrentSec ? 'active' : ''}`;
 
-                secondsRing.appendChild(tick);
+                    const xTick = R_SECONDS_TICKS * Math.cos(angleRad);
+                    const yTick = R_SECONDS_TICKS * Math.sin(angleRad);
+
+                    tick.style.left = `${xTick}px`;
+                    tick.style.top = `${yTick}px`;
+                    tick.style.transform = `rotate(${angleDeg + 90}deg)`;
+                    tick.style.opacity = isCurrentSec ? "1" : opacity.toFixed(2);
+                    secondsRing.appendChild(tick);
+
+                    if (i % 5 === 0 && Math.abs(angleDeg) > 10) {
+                        const secNum = document.createElement('div');
+                        secNum.className = 'second-num-item';
+                        secNum.innerText = i.toString().padStart(2, '0');
+
+                        const xNum = R_SECONDS_NUM * Math.cos(angleRad);
+                        const yNum = R_SECONDS_NUM * Math.sin(angleRad);
+
+                        secNum.style.left = `${xNum}px`;
+                        secNum.style.top = `${yNum}px`;
+                        secNum.style.transform = `rotate(${angleDeg}deg)`;
+                        secNum.style.opacity = opacity.toFixed(2);
+                        secNum.style.color = opacity > 0.8 ? '#ffffff' : `rgba(255, 255, 255, ${opacity})`;
+
+                        secondsRing.appendChild(secNum);
+                    }
+                }
             }
         }
 
         function updateClock() {
             const now = new Date();
-            let hours = now.getHours();
+            const hours = now.getHours();
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
+            const milliseconds = now.getMilliseconds();
 
-            if (!is24Hour) {
-                hours = hours % 12 || 12;
-            }
+            const exactSecond = seconds + (milliseconds / 1000);
+            const exactMinute = minutes + (exactSecond / 60);
 
             document.getElementById('hour').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('pill-minute').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('pill-second').innerText = seconds.toString().padStart(2, '0');
 
-            // Rotación alineada
-            const minAngle = -(minutes * 6 + (seconds / 60) * 6);
-            document.getElementById('minutes-ring').style.transform = `rotate(${minAngle}deg)`;
+            renderArcElements(exactMinute, exactSecond, minutes, seconds);
 
-            const secAngle = -(seconds * 6);
-            document.getElementById('seconds-ring').style.transform = `rotate(${secAngle}deg)`;
-
-            // Fecha
             const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
             const days = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
 
             document.getElementById('date-str').innerText = `${now.getDate().toString().padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
             document.getElementById('day-str').innerText = days[now.getDay()];
+
+            requestAnimationFrame(updateClock);
         }
 
-        function toggleFormat() {
-            is24Hour = !is24Hour;
-            document.getElementById('format-label').innerText = is24Hour ? '24H' : '12H';
-            updateClock();
-        }
-
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => console.log(err));
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                }
-            }
-        }
-
-        buildDials();
-        updateClock();
-        setInterval(updateClock, 1000);
+        requestAnimationFrame(updateClock);
     </script>
 </body>
 </html>
