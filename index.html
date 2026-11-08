@@ -15,7 +15,7 @@
         html, body {
             width: 100vw;
             height: 100vh;
-            background-color: #0b0c0e;
+            background-color: #000000;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
@@ -29,23 +29,23 @@
             align-items: center;
         }
 
-        /* Escenario donde se dibuja el reloj */
+        /* Escenario del reloj */
         .clock-stage {
             position: absolute;
             left: 5vw;
             top: 50%;
             transform: translateY(-50%);
-            width: 600px;
-            height: 600px;
+            width: 700px;
+            height: 700px;
         }
 
-        /* 1. La hora destacada */
+        /* Hora principal fija a la izquierda */
         .hour-display {
             position: absolute;
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 8rem;
+            font-size: 8.5rem;
             font-weight: 700;
             color: #ffffff;
             z-index: 10;
@@ -53,31 +53,33 @@
             letter-spacing: -3px;
         }
 
-        /* 2. El óvalo alargado que enmarca minutos (izq) y segundos (der) */
+        /* Óvalo contenedor del minuto/segundo activo */
         .oval-pill {
             position: absolute;
-            left: 175px;
+            left: 205px;
             top: 50%;
             transform: translateY(-50%);
-            width: 140px;
+            width: 135px;
             height: 52px;
-            border: 2px solid rgba(255, 255, 255, 0.85);
+            border: 2px solid rgba(255, 255, 255, 0.9);
             border-radius: 26px;
             z-index: 8;
             pointer-events: none;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
-        /* 3. El centro virtual alrededor del cual giran ambos círculos */
+        /* Eje de rotación del semicírculo */
         .wheel-center {
             position: absolute;
-            left: 60px; /* Alineado con el centro del óvalo a la derecha */
+            left: 80px;
             top: 50%;
             width: 0;
             height: 0;
+            /* Aplica una máscara para que SOLO se vea el semicírculo derecho y desaparezca el lado izquierdo */
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 45%, #000 52%, #000 100%);
+            mask-image: linear-gradient(to right, transparent 0%, transparent 45%, #000 52%, #000 100%);
         }
 
-        /* Anillos giratorios */
         .dial-ring {
             position: absolute;
             top: 0;
@@ -87,12 +89,12 @@
             transition: transform 0.3s cubic-bezier(0.1, 0, 0.1, 1);
         }
 
-        /* CÍRCULO INTERIOR: Números de minutos */
+        /* Semicírculo Interior: Minutos */
         .minute-item {
             position: absolute;
             font-size: 1.5rem;
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.85);
             width: 50px;
             height: 40px;
             line-height: 40px;
@@ -101,25 +103,25 @@
             margin-top: -20px;
         }
 
-        /* CÍRCULO EXTERIOR: Ticks/marcas de segundos */
+        /* Semicírculo Exterior: Segundos */
         .tick-item {
             position: absolute;
             width: 2px;
-            height: 14px;
-            background-color: rgba(255, 255, 255, 0.25);
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.3);
             margin-left: -1px;
-            margin-top: -7px;
+            margin-top: -6px;
         }
 
         .tick-item.major {
             width: 3px;
-            height: 20px;
-            background-color: rgba(255, 255, 255, 0.75);
+            height: 18px;
+            background-color: rgba(255, 255, 255, 0.85);
             margin-left: -1.5px;
-            margin-top: -10px;
+            margin-top: -9px;
         }
 
-        /* 4. Fecha y día en la esquina inferior */
+        /* Fecha y Día */
         .date-display {
             position: absolute;
             right: 80px;
@@ -143,7 +145,7 @@
             text-transform: uppercase;
         }
 
-        /* Botones superiores */
+        /* Botones de Control */
         .controls {
             position: absolute;
             top: 20px;
@@ -173,45 +175,45 @@
 <body>
 
     <div class="container">
-        <!-- Controles -->
+        <!-- Controles de pantalla -->
         <div class="controls">
             <button class="btn" onclick="toggleFormat()">Formato: <span id="format-label">24H</span></button>
             <button class="btn" onclick="toggleFullscreen()">Pantalla Completa</button>
         </div>
 
         <div class="clock-stage">
-            <!-- Hora fija a la izquierda -->
-            <div class="hour-display" id="hour">18</div>
+            <!-- Número de la hora -->
+            <div class="hour-display" id="hour">13</div>
 
-            <!-- Óvalo selector -->
+            <!-- Píldora selector de minuto activo -->
             <div class="oval-pill"></div>
 
-            <!-- Eje central desde donde se trazan los dos círculos -->
+            <!-- Anillos recortados como semicírculo -->
             <div class="wheel-center">
                 <div class="dial-ring" id="minutes-ring"></div>
                 <div class="dial-ring" id="seconds-ring"></div>
             </div>
         </div>
 
-        <!-- Fecha inferior derecha -->
+        <!-- Fecha en la esquina derecha -->
         <div class="date-display">
-            <div class="full-date" id="date-str">13 AUG 2026</div>
-            <div class="day-name" id="day-str">THURSDAY</div>
+            <div class="full-date" id="date-str">08 NOV 2026</div>
+            <div class="day-name" id="day-str">SUNDAY</div>
         </div>
     </div>
 
     <script>
         let is24Hour = true;
-        const R_MINUTES = 160; // Radio del círculo interior (Números de minutos)
-        const R_SECONDS = 220; // Radio del círculo exterior (Ticks de segundos)
+        const R_MINUTES = 175; // Radio interior (minutos)
+        const R_SECONDS = 235; // Radio exterior (segundos)
 
         function buildDials() {
             const minutesRing = document.getElementById('minutes-ring');
             const secondsRing = document.getElementById('seconds-ring');
 
-            // 1. Generar Círculo Interior: Números cada 5 minutos (00, 05, 10... 55)
+            // 1. Minutos cada 5 (00, 05, 10, etc.)
             for (let i = 0; i < 60; i += 5) {
-                const angleDeg = i * 6; // 360° / 60 min = 6° por minuto
+                const angleDeg = i * 6;
                 const angleRad = angleDeg * (Math.PI / 180);
 
                 const item = document.createElement('div');
@@ -223,13 +225,12 @@
 
                 item.style.left = `${x}px`;
                 item.style.top = `${y}px`;
-                // Rotar cada número para que apunte radialmente hacia afuera
                 item.style.transform = `rotate(${angleDeg}deg)`;
 
                 minutesRing.appendChild(item);
             }
 
-            // 2. Generar Círculo Exterior: 60 marcas/ticks de segundos
+            // 2. Ticks de Segundos
             for (let i = 0; i < 60; i++) {
                 const angleDeg = i * 6;
                 const angleRad = angleDeg * (Math.PI / 180);
@@ -258,14 +259,12 @@
                 hours = hours % 12 || 12;
             }
 
-            // Actualizar número de Hora
             document.getElementById('hour').innerText = hours.toString().padStart(2, '0');
 
-            // Rotar el círculo de minutos para que el minuto actual quede horizontal a las 0° (dentro de la parte izquierda del óvalo)
+            // Rotación sincrónica con el minuto y segundo actual
             const minAngle = -(minutes * 6 + (seconds / 60) * 6);
             document.getElementById('minutes-ring').style.transform = `rotate(${minAngle}deg)`;
 
-            // Rotar el círculo exterior de segundos
             const secAngle = -(seconds * 6);
             document.getElementById('seconds-ring').style.transform = `rotate(${secAngle}deg)`;
 
