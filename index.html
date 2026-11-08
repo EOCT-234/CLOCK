@@ -209,11 +209,11 @@
             margin-top: -15px;
         }
 
-        /* --- BLOQUE DE FECHA UBICADO A LA DERECHA INFERIOR DEL RELOJ --- */
+        /* --- BLOQUE DE FECHA Y TEXTO (MÁS GRANDE Y MÁS A LA DERECHA) --- */
         .date-display {
             position: absolute;
-            left: 480px;
-            top: 60%;
+            left: 560px;
+            top: 58%;
             text-align: left;
             font-family: monospace;
             letter-spacing: 1px;
@@ -229,23 +229,23 @@
         }
 
         .motivation-comment {
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.55);
-            margin-bottom: 4px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             font-weight: 600;
         }
 
         .date-display .full-date {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 600;
-            margin-bottom: 2px;
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 700;
+            margin-bottom: 4px;
         }
 
         .date-display .day-name {
-            font-size: 1rem;
+            font-size: 1.4rem;
             color: #ffffff;
             font-weight: 800;
             text-transform: uppercase;
@@ -260,24 +260,24 @@
             }
 
             .date-display {
-                left: 420px !important;
-                top: 62% !important;
+                left: 500px !important;
+                top: 60% !important;
                 text-align: left !important;
                 padding: 0 !important;
             }
 
             .motivation-comment {
-                font-size: 0.6rem !important;
-                margin-bottom: 3px !important;
+                font-size: 0.75rem !important;
+                margin-bottom: 4px !important;
             }
 
             .date-display .full-date {
-                font-size: 0.75rem !important;
-                margin-bottom: 2px !important;
+                font-size: 1rem !important;
+                margin-bottom: 3px !important;
             }
 
             .date-display .day-name {
-                font-size: 0.9rem !important;
+                font-size: 1.25rem !important;
             }
         }
     </style>
@@ -301,7 +301,6 @@
                 <div class="dial-ring" id="seconds-ring"></div>
             </div>
 
-            <!-- El bloque de la fecha ahora forma parte interna de la estructura del reloj -->
             <div class="date-display" id="calendar-btn" title="Abrir Calendario">
                 <div class="motivation-comment">// RESISTE INÚTIL, TÚ PUEDES</div>
                 <div class="full-date" id="date-str">-- --- ----</div>
