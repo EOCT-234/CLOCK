@@ -30,7 +30,31 @@
             justify-content: center;
         }
 
-        /* --- VISTA ESCRITORIO (PC) --- */
+        /* --- BOTÓN FLOTANTE DE FONDO DE PANTALLA --- */
+        .wallpaper-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.2s ease;
+        }
+
+        .wallpaper-btn:active {
+            transform: scale(0.95);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* --- CONTENEDOR PRINCIPAL DEL RELOJ --- */
         .clock-stage {
             position: absolute;
             left: clamp(220px, 26vw, 38vw);
@@ -185,17 +209,19 @@
             margin-top: -15px;
         }
 
+        /* --- BLOQUE DE FECHA UBICADO A LA DERECHA INFERIOR DEL RELOJ --- */
         .date-display {
             position: absolute;
-            right: 100px;
-            bottom: 80px;
-            text-align: right;
+            left: 480px;
+            top: 60%;
+            text-align: left;
             font-family: monospace;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             cursor: pointer;
-            padding: 10px 15px;
-            border-radius: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
             transition: background-color 0.2s ease;
+            z-index: 20;
         }
 
         .date-display:hover {
@@ -203,23 +229,23 @@
         }
 
         .motivation-comment {
-            font-size: 0.9rem;
+            font-size: 0.65rem;
             color: rgba(255, 255, 255, 0.55);
-            margin-bottom: 12px;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             font-weight: 600;
         }
 
         .date-display .full-date {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.85);
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .date-display .day-name {
-            font-size: 1.4rem;
+            font-size: 1rem;
             color: #ffffff;
             font-weight: 800;
             text-transform: uppercase;
@@ -228,30 +254,26 @@
         /* --- ADAPTACIÓN MÓVIL / PANTALLA VERTICAL --- */
         @media screen and (max-width: 900px), screen and (orientation: portrait) {
             .clock-stage {
-                left: 55% !important;
-                top: 40% !important;
-                transform: translate(-50%, -50%) scale(0.55) !important;
+                left: 50% !important;
+                top: 45% !important;
+                transform: translate(-50%, -50%) scale(0.52) !important;
             }
 
             .date-display {
-                left: auto !important;
-                right: 15px !important;
-                bottom: 15px !important;
-                transform: none !important;
-                text-align: right !important;
-                width: auto !important;
+                left: 420px !important;
+                top: 62% !important;
+                text-align: left !important;
                 padding: 0 !important;
             }
 
             .motivation-comment {
                 font-size: 0.6rem !important;
-                margin-bottom: 2px !important;
-                letter-spacing: 0.5px !important;
+                margin-bottom: 3px !important;
             }
 
             .date-display .full-date {
                 font-size: 0.75rem !important;
-                margin-bottom: 1px !important;
+                margin-bottom: 2px !important;
             }
 
             .date-display .day-name {
@@ -263,6 +285,9 @@
 <body>
 
     <div class="container">
+        <!-- Botón flotante para invocar la función de fondo -->
+        <button class="wallpaper-btn" id="set-wallpaper-btn">ESTABLECER FONDO</button>
+
         <div class="clock-stage" id="clock-btn" title="Abrir Reloj">
             <div class="hour-display" id="hour">00</div>
 
@@ -275,12 +300,13 @@
                 <div class="dial-ring" id="minutes-ring"></div>
                 <div class="dial-ring" id="seconds-ring"></div>
             </div>
-        </div>
 
-        <div class="date-display" id="calendar-btn" title="Abrir Calendario">
-            <div class="motivation-comment">// Resiste inútil, tú puedes</div>
-            <div class="full-date" id="date-str">-- --- ----</div>
-            <div class="day-name" id="day-str">------</div>
+            <!-- El bloque de la fecha ahora forma parte interna de la estructura del reloj -->
+            <div class="date-display" id="calendar-btn" title="Abrir Calendario">
+                <div class="motivation-comment">// RESISTE INÚTIL, TÚ PUEDES</div>
+                <div class="full-date" id="date-str">-- --- ----</div>
+                <div class="day-name" id="day-str">------</div>
+            </div>
         </div>
     </div>
 
@@ -290,11 +316,21 @@
         const R_SECONDS_TICKS = 255; 
         const R_SECONDS_NUM   = 290;
 
+        document.getElementById('set-wallpaper-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (window.AndroidBridge && typeof window.AndroidBridge.openWallpaperPicker === 'function') {
+                window.AndroidBridge.openWallpaperPicker();
+            } else {
+                alert("Para usar esta opción como fondo animado, debes abrir la app compilada con Live Wallpaper habilitado.");
+            }
+        });
+
         document.getElementById('clock-btn').addEventListener('click', function() {
             window.location.href = "ms-clock:";
         });
 
-        document.getElementById('calendar-btn').addEventListener('click', function() {
+        document.getElementById('calendar-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
             window.location.href = "outlookcal:";
         });
 

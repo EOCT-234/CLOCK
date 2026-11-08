@@ -1,0 +1,113 @@
+{
+  "preset_info": {
+    "title": "Nothing Arc Clock",
+    "author": "Custom",
+    "description": "Replica exacta del reloj minimalista tipo Nothing Phone"
+  },
+  "root_group": {
+    "items": [
+      {
+        "type": "TEXT",
+        "name": "Hora Principal",
+        "text_expression": "$df(HH)$",
+        "font_size": 120,
+        "font_weight": "BOLD",
+        "color": "#FFFFFF",
+        "position": { "align": "TOP_LEFT", "x": 40, "y": 80 }
+      },
+      {
+        "type": "OVERLAP_GROUP",
+        "name": "Oval Pill",
+        "position": { "align": "TOP_LEFT", "x": 190, "y": 110 },
+        "items": [
+          {
+            "type": "SHAPE",
+            "shape_type": "RECTANGLE",
+            "width": 160,
+            "height": 55,
+            "corners": 30,
+            "paint_style": "STROKE",
+            "stroke_width": 3,
+            "color": "#FFFFFF"
+          },
+          {
+            "type": "TEXT",
+            "name": "Minuto Actual",
+            "text_expression": "$df(mm)$",
+            "font_size": 36,
+            "font_weight": "BOLD",
+            "color": "#FFFFFF",
+            "position": { "x": -20, "y": 0 }
+          },
+          {
+            "type": "TEXT",
+            "name": "Segundo Actual",
+            "text_expression": "$df(ss)$",
+            "font_size": 14,
+            "font_weight": "NORMAL",
+            "color": "#D8D8D8",
+            "position": { "x": 35, "y": 2 }
+          }
+        ]
+      },
+      {
+        "type": "PROGRESS_ARC",
+        "name": "Arco Minutos",
+        "progress_mode": "CUSTOM_EXPRESSION",
+        "formula": "$df(m)$",
+        "min": 0,
+        "max": 60,
+        "style": "ARC",
+        "sweep_angle": 180,
+        "rotation": 270,
+        "radius": 140,
+        "color": "#FFFFFF",
+        "position": { "align": "CENTER_LEFT", "x": 140, "y": 0 }
+      },
+      {
+        "type": "PROGRESS_ARC",
+        "name": "Arco Segundos",
+        "progress_mode": "CUSTOM_EXPRESSION",
+        "formula": "$df(s)$",
+        "min": 0,
+        "max": 60,
+        "style": "ARC",
+        "sweep_angle": 180,
+        "rotation": 270,
+        "radius": 220,
+        "color": "#FFFFFF",
+        "position": { "align": "CENTER_LEFT", "x": 140, "y": 0 }
+      },
+      {
+        "type": "STACK_GROUP",
+        "name": "Fecha e Info Inferior",
+        "orientation": "VERTICAL",
+        "alignment": "RIGHT",
+        "position": { "align": "BOTTOM_RIGHT", "x": 15, "y": 15 },
+        "items": [
+          {
+            "type": "TEXT",
+            "text_expression": "// RESISTE INÚTIL, TÚ PUEDES",
+            "font_family": "MONOSPACE",
+            "font_size": 8,
+            "color": "#80FFFFFF"
+          },
+          {
+            "type": "TEXT",
+            "text_expression": "$df(dd MMM yyyy)$",
+            "font_size": 10,
+            "font_weight": "BOLD",
+            "color": "#CCFFFFFF"
+          },
+          {
+            "type": "TEXT",
+            "text_expression": "$df(EEEE)$",
+            "font_size": 12,
+            "font_weight": "EXTRA_BOLD",
+            "color": "#FFFFFF"
+          }
+        ]
+      }
+    ]
+  }
+}
