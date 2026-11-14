@@ -15,102 +15,137 @@
         html, body {
             width: 100vw;
             height: 100vh;
-            background-color: #000000;
+            background-color: #030406;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
         }
 
+        /* --- CAPA 1: TEXTURA CON RELIEVE METÁLICO E ILUMINACIÓN AMBIENTAL --- */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(circle at 82% 40%, rgba(42, 50, 66, 0.42) 0%, rgba(12, 14, 18, 0.85) 48%, #020203 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(255, 255, 255, 0.028) 0px,
+                    rgba(255, 255, 255, 0.028) 1px,
+                    rgba(0, 0, 0, 0.45) 1px,
+                    rgba(0, 0, 0, 0.45) 2px,
+                    transparent 2px,
+                    transparent 7px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    rgba(255, 255, 255, 0.022) 0px,
+                    rgba(255, 255, 255, 0.022) 1px,
+                    rgba(0, 0, 0, 0.45) 1px,
+                    rgba(0, 0, 0, 0.45) 2px,
+                    transparent 2px,
+                    transparent 7px
+                );
+        }
+
+        /* --- CAPA 2: MICRO-GRANO ORGÁNICO --- */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.045;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
         .container {
             position: relative;
+            z-index: 2;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .widget-wrapper {
+            width: 33.33vw;
+            min-width: 320px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 6vh;
+            padding-bottom: 8vh;
+            margin-left: auto;
+        }
+
+        /* --- CONTENEDOR DEL RELOJ --- */
+        .clock-stage {
+            position: relative;
             width: 100%;
-            height: 100%;
+            height: 420px;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        /* --- BOTÓN FLOTANTE DE FONDO DE PANTALLA --- */
-        .wallpaper-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            transition: all 0.2s ease;
-        }
-
-        .wallpaper-btn:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* --- CONTENEDOR PRINCIPAL DEL RELOJ --- */
-        .clock-stage {
-            position: absolute;
-            left: clamp(220px, 26vw, 38vw);
-            top: 50%;
-            transform: translateY(-50%);
-            width: 950px;
-            height: 700px;
-            cursor: pointer;
-            transition: transform 0.2s ease, filter 0.2s ease;
-        }
-
-        .clock-stage:hover {
-            filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.3));
+            transform: scale(0.85);
         }
 
         .hour-display {
             position: absolute;
-            left: 65px;
+            left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 8.5rem;
+            font-size: 7rem;
             font-weight: 700;
             color: #ffffff;
             z-index: 10;
             line-height: 1;
             letter-spacing: -3px;
+            text-shadow: 
+                0 6px 24px rgba(0, 0, 0, 0.9),
+                0 0 30px rgba(255, 255, 255, 0.12);
         }
 
         .oval-pill {
             position: absolute;
-            left: 235px;
+            left: 170px;
             top: 50%;
             transform: translateY(-50%);
-            width: 200px;
-            height: 64px;
-            border: 2px solid rgba(255, 255, 255, 0.95);
-            border-radius: 32px;
+            width: 180px;
+            height: 58px;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(6, 8, 12, 0.72) 100%);
+            backdrop-filter: blur(6px);
             z-index: 8;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.75),
+                0 0 20px rgba(255, 255, 255, 0.15),
+                inset 0 1px 1px rgba(255, 255, 255, 0.35);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 22px 0 45px;
+            padding: 0 18px 0 38px;
         }
 
         .oval-pill .pill-minute {
-            font-size: 3.2rem;
+            font-size: 2.8rem;
             font-weight: 700;
             color: #ffffff;
             z-index: 12;
             line-height: 1;
             letter-spacing: -1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
         .oval-pill .pill-second {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: rgba(255, 255, 255, 0.85);
             z-index: 12;
@@ -119,10 +154,11 @@
 
         .wheel-center {
             position: absolute;
-            left: 110px;
+            left: 60px;
             top: 50%;
             width: 0;
             height: 0;
+            z-index: 5;
         }
 
         .dial-ring {
@@ -155,13 +191,13 @@
             background-color: #ffffff !important;
             margin-left: -2px !important;
             margin-top: -10px !important;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.95);
             z-index: 15;
         }
 
         .minute-item {
             position: absolute;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 600;
             width: 50px;
             height: 40px;
@@ -169,6 +205,7 @@
             text-align: center;
             margin-left: -25px;
             margin-top: -20px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
         }
 
         .tick-item {
@@ -193,13 +230,13 @@
             background-color: #ffffff !important;
             margin-left: -1.5px !important;
             margin-top: -9px !important;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
             z-index: 15;
         }
 
         .second-num-item {
             position: absolute;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             width: 40px;
             height: 30px;
@@ -207,77 +244,97 @@
             text-align: center;
             margin-left: -20px;
             margin-top: -15px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
         }
 
-        /* --- BLOQUE DE FECHA Y TEXTO (MÁS GRANDE Y MÁS A LA DERECHA) --- */
+        /* --- BLOQUE DE FECHA --- */
         .date-display {
-            position: absolute;
-            left: 560px;
-            top: 58%;
-            text-align: left;
+            position: relative;
+            text-align: center;
             font-family: monospace;
-            letter-spacing: 1px;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 10px;
-            transition: background-color 0.2s ease;
+            letter-spacing: 1.5px;
             z-index: 20;
-        }
-
-        .date-display:hover {
-            background-color: rgba(255, 255, 255, 0.05);
+            padding: 12px 24px;
+            border-radius: 12px;
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.45) 0%, transparent 75%);
         }
 
         .motivation-comment {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 6px;
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 1.5px;
             font-weight: 600;
         }
 
         .date-display .full-date {
             font-size: 1.15rem;
-            color: rgba(255, 255, 255, 0.9);
+            color: rgba(255, 255, 255, 0.88);
             font-weight: 700;
             margin-bottom: 4px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         }
 
         .date-display .day-name {
-            font-size: 1.4rem;
+            font-size: 1.55rem;
             color: #ffffff;
             font-weight: 800;
             text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
         }
 
-        /* --- ADAPTACIÓN MÓVIL / PANTALLA VERTICAL --- */
+        /* --- ADAPTACIÓN MÓVIL --- */
         @media screen and (max-width: 900px), screen and (orientation: portrait) {
-            .clock-stage {
-                left: 50% !important;
-                top: 45% !important;
-                transform: translate(-50%, -50%) scale(0.52) !important;
+            body::before {
+                background-image: 
+                    radial-gradient(circle at 50% 35%, rgba(42, 50, 66, 0.42) 0%, rgba(12, 14, 18, 0.88) 55%, #020203 100%),
+                    repeating-linear-gradient(
+                        45deg,
+                        rgba(255, 255, 255, 0.028) 0px,
+                        rgba(255, 255, 255, 0.028) 1px,
+                        rgba(0, 0, 0, 0.45) 1px,
+                        rgba(0, 0, 0, 0.45) 2px,
+                        transparent 2px,
+                        transparent 7px
+                    ),
+                    repeating-linear-gradient(
+                        -45deg,
+                        rgba(255, 255, 255, 0.022) 0px,
+                        rgba(255, 255, 255, 0.022) 1px,
+                        rgba(0, 0, 0, 0.45) 1px,
+                        rgba(0, 0, 0, 0.45) 2px,
+                        transparent 2px,
+                        transparent 7px
+                    );
             }
 
-            .date-display {
-                left: 500px !important;
-                top: 60% !important;
-                text-align: left !important;
-                padding: 0 !important;
+            .container {
+                justify-content: center !important;
+            }
+
+            .widget-wrapper {
+                width: 100vw !important;
+                margin-left: 0 !important;
+                padding-top: 8vh !important;
+                padding-bottom: 6vh !important;
+            }
+
+            .clock-stage {
+                transform: scale(0.72) !important;
             }
 
             .motivation-comment {
                 font-size: 0.75rem !important;
-                margin-bottom: 4px !important;
             }
 
             .date-display .full-date {
-                font-size: 1rem !important;
-                margin-bottom: 3px !important;
+                font-size: 1.05rem !important;
             }
 
             .date-display .day-name {
-                font-size: 1.25rem !important;
+                font-size: 1.35rem !important;
             }
         }
     </style>
@@ -285,23 +342,22 @@
 <body>
 
     <div class="container">
-        <!-- Botón flotante para invocar la función de fondo -->
-        <button class="wallpaper-btn" id="set-wallpaper-btn">ESTABLECER FONDO</button>
+        <div class="widget-wrapper">
+            <div class="clock-stage">
+                <div class="hour-display" id="hour">00</div>
 
-        <div class="clock-stage" id="clock-btn" title="Abrir Reloj">
-            <div class="hour-display" id="hour">00</div>
+                <div class="oval-pill">
+                    <span class="pill-minute" id="pill-minute">00</span>
+                    <span class="pill-second" id="pill-second">00</span>
+                </div>
 
-            <div class="oval-pill">
-                <span class="pill-minute" id="pill-minute">00</span>
-                <span class="pill-second" id="pill-second">00</span>
+                <div class="wheel-center">
+                    <div class="dial-ring" id="minutes-ring"></div>
+                    <div class="dial-ring" id="seconds-ring"></div>
+                </div>
             </div>
 
-            <div class="wheel-center">
-                <div class="dial-ring" id="minutes-ring"></div>
-                <div class="dial-ring" id="seconds-ring"></div>
-            </div>
-
-            <div class="date-display" id="calendar-btn" title="Abrir Calendario">
+            <div class="date-display">
                 <div class="motivation-comment">// RESISTE INÚTIL, TÚ PUEDES</div>
                 <div class="full-date" id="date-str">-- --- ----</div>
                 <div class="day-name" id="day-str">------</div>
@@ -314,24 +370,6 @@
         const R_MINUTES_NUM   = 180; 
         const R_SECONDS_TICKS = 255; 
         const R_SECONDS_NUM   = 290;
-
-        document.getElementById('set-wallpaper-btn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (window.AndroidBridge && typeof window.AndroidBridge.openWallpaperPicker === 'function') {
-                window.AndroidBridge.openWallpaperPicker();
-            } else {
-                alert("Para usar esta opción como fondo animado, debes abrir la app compilada con Live Wallpaper habilitado.");
-            }
-        });
-
-        document.getElementById('clock-btn').addEventListener('click', function() {
-            window.location.href = "ms-clock:";
-        });
-
-        document.getElementById('calendar-btn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            window.location.href = "outlookcal:";
-        });
 
         function renderArcElements(exactMinute, exactSecond, currentMinInt, currentSecInt) {
             const minutesRing = document.getElementById('minutes-ring');
